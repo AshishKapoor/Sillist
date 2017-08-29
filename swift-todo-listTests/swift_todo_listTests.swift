@@ -11,14 +11,22 @@ import XCTest
 
 class swift_todo_listTests: XCTestCase {
     
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        
         super.tearDown()
+    }
+    
+    func testTextFieldValues() {
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        guard let viewController = storyboard.instantiateInitialViewController() as? UTDetailVC else {return}
+        viewController.todoTF.text = "Testing..."
+        let test = viewController.todoTF.text
+        XCTAssertTrue(test == nil)
     }
     
     func testExample() {

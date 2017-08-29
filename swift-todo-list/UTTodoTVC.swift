@@ -23,6 +23,8 @@ class UTTodoTVC: UITableViewController {
         } else {
             self.navigationItem.title = kDone
         }
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 50
         self.tableView.tableFooterView = UIView()
     }
     
@@ -38,12 +40,11 @@ class UTTodoTVC: UITableViewController {
     
     func loadData() {
         do {
-            // TODO: - Refactor this later...
-            let formatRequest : NSFetchRequest<Task> = Task.fetchRequest()
-            let predicate = NSPredicate(format: "isPending == %@", NSNumber(value: true))
-            formatRequest.predicate = predicate
-            let fetchedResults = try context.fetch(formatRequest)
-            pendingTasks = fetchedResults
+            let formatPendingRequest : NSFetchRequest<Task> = Task.fetchRequest()
+            let predicatePending = NSPredicate(format: "isPending == %@", NSNumber(value: true))
+            formatPendingRequest.predicate = predicatePending
+            let fetchedPendingResults = try context.fetch(formatPendingRequest)
+            pendingTasks = fetchedPendingResults
             
             let formatDoneRequest : NSFetchRequest<Task> = Task.fetchRequest()
             let predicateDone = NSPredicate(format: "isPending == %@", NSNumber(value: false))
@@ -69,11 +70,13 @@ class UTTodoTVC: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "pendingReuseIdentifier", for: indexPath)
             guard let todo = pendingTasks[indexPath.row].todo else { return UITableViewCell() }
             cell.textLabel?.text = todo
+            cell.textLabel?.numberOfLines = 0
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "doneReuseIdentifier", for: indexPath)
             guard let todo = doneTasks[indexPath.row].todo else {return UITableViewCell()}
             cell.textLabel?.text = todo
+            cell.textLabel?.numberOfLines = 0
             return cell
         }
     }
@@ -117,6 +120,14 @@ class UTTodoTVC: UITableViewController {
                         UTDatabaseController.saveContext()
                         self.loadData()
                         tableView.reloadData()
+                        
+                        let alert = UIAlertController(title: "", message: "Marked as done!", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        
+                        let when = DispatchTime.now() + 0.5
+                        DispatchQueue.main.asyncAfter(deadline: when){
+                            alert.dismiss(animated: true, completion: nil)
+                        }
                     }
                 }
             }
@@ -125,7 +136,7 @@ class UTTodoTVC: UITableViewController {
 
     @IBAction func addTaskButtonPressed(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let destination: UTDetailVC = storyboard.instantiateViewController(withIdentifier: "UTDetailVC") as! UTDetailVC
+        guard let destination: UTDetailVC = storyboard.instantiateViewController(withIdentifier: "UTDetailVC") as? UTDetailVC else {return}
         destination.title = "Add Todo"
         self.navigationController?.pushViewController(destination, animated: true)
     }
