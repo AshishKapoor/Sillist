@@ -17,6 +17,7 @@
 		89FB8D341F55A5DD0063141C /* UTDatabaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FB8D331F55A5DD0063141C /* UTDatabaseController.swift */; };
 		89FB8D361F55A8870063141C /* UTTodoTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FB8D351F55A8870063141C /* UTTodoTVC.swift */; };
 		89FB8D381F55ABF60063141C /* UTConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FB8D371F55ABF60063141C /* UTConstants.swift */; };
+		89FB8D3A1F55B0B20063141C /* UTDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FB8D391F55B0B20063141C /* UTDetailVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		89FB8D331F55A5DD0063141C /* UTDatabaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UTDatabaseController.swift; sourceTree = "<group>"; };
 		89FB8D351F55A8870063141C /* UTTodoTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UTTodoTVC.swift; sourceTree = "<group>"; };
 		89FB8D371F55ABF60063141C /* UTConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UTConstants.swift; sourceTree = "<group>"; };
+		89FB8D391F55B0B20063141C /* UTDetailVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UTDetailVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				89FB8D351F55A8870063141C /* UTTodoTVC.swift */,
+				89FB8D391F55B0B20063141C /* UTDetailVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				89FB8D051F55A3220063141C /* swift_todo_list.xcdatamodeld in Sources */,
 				89FB8D361F55A8870063141C /* UTTodoTVC.swift in Sources */,
 				89FB8D341F55A5DD0063141C /* UTDatabaseController.swift in Sources */,
+				89FB8D3A1F55B0B20063141C /* UTDetailVC.swift in Sources */,
 				89FB8D381F55ABF60063141C /* UTConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

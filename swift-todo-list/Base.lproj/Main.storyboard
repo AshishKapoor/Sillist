@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -109,6 +110,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tD1-IV-jIh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1232" y="-304"/>
+        </scene>
+        <!--DetailVC-->
+        <scene sceneID="Pjc-eO-Z30">
+            <objects>
+                <viewController storyboardIdentifier="UTDetailVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mmb-AG-NEh" customClass="UTDetailVC" customModule="swift_todo_list" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="p6D-fy-MEH"/>
+                        <viewControllerLayoutGuide type="bottom" id="Af3-XX-Fy6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wy9-YF-EAs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your todo here..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="myp-Uk-404">
+                                <rect key="frame" x="47" y="28" width="281" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="myp-Uk-404" secondAttribute="trailing" constant="31" id="P4b-MD-t8C"/>
+                            <constraint firstItem="myp-Uk-404" firstAttribute="leading" secondItem="wy9-YF-EAs" secondAttribute="leadingMargin" constant="31" id="kcn-6O-MvA"/>
+                            <constraint firstItem="myp-Uk-404" firstAttribute="centerX" secondItem="wy9-YF-EAs" secondAttribute="centerX" id="kwF-Bj-S6r"/>
+                            <constraint firstItem="myp-Uk-404" firstAttribute="top" secondItem="p6D-fy-MEH" secondAttribute="bottom" constant="8" id="twv-LX-NiV"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1dg-QL-BTX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1981.5999999999999" y="-302.6986506746627"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qEM-NJ-tyC">
