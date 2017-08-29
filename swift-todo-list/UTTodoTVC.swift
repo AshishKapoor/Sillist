@@ -17,6 +17,7 @@ class UTTodoTVC: UITableViewController {
         } else {
             self.navigationItem.title = kDone
         }
+        self.tableView.tableFooterView = UIView()
     }
 
     // MARK: - Table view data source
@@ -51,10 +52,14 @@ class UTTodoTVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let destination: UTDetailVC = storyboard.instantiateViewController(withIdentifier: "UTDetailVC") as! UTDetailVC
-        destination.title = String(indexPath.row)
-        self.navigationController?.pushViewController(destination, animated: true)
+        if navigationController?.tabBarController?.selectedIndex == 0 {
+            print("should change state of the task to \"done\"")
+        } else {
+            let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+            let destination: UTDetailVC = storyboard.instantiateViewController(withIdentifier: "UTDetailVC") as! UTDetailVC
+            destination.title = String(indexPath.row)
+            self.navigationController?.pushViewController(destination, animated: true)
+        }
     }
 
     @IBAction func addTaskButtonPressed(_ sender: Any) {

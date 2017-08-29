@@ -88,7 +88,6 @@
 				89FB8D371F55ABF60063141C /* UTConstants.swift */,
 				89FB8CFC1F55A3220063141C /* AppDelegate.swift */,
 				89FB8D0B1F55A3220063141C /* Info.plist */,
-				89FB8D001F55A3220063141C /* Main.storyboard */,
 				89FB8CFB1F55A3220063141C /* swift-todo-list */,
 				89FB8D131F55A3220063141C /* swift-todo-listTests */,
 				89FB8D1E1F55A3220063141C /* swift-todo-listUITests */,
@@ -165,6 +164,7 @@
 			children = (
 				89FB8D061F55A3220063141C /* Assets.xcassets */,
 				89FB8D081F55A3220063141C /* LaunchScreen.storyboard */,
+				89FB8D001F55A3220063141C /* Main.storyboard */,
 			);
 			name = Defaults;
 			sourceTree = "<group>";
@@ -353,7 +353,6 @@
 				89FB8D011F55A3220063141C /* Base */,
 			);
 			name = Main.storyboard;
-			path = "swift-todo-list";
 			sourceTree = "<group>";
 		};
 		89FB8D081F55A3220063141C /* LaunchScreen.storyboard */ = {

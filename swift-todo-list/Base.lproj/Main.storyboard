@@ -17,7 +17,10 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" id="Uav-Sm-rRb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="g0Q-Dj-gmT" kind="relationship" relationship="viewControllers" id="Emd-89-gYY"/>
@@ -64,9 +67,13 @@
                     <tabBarItem key="tabBarItem" title="" image="icons8-food" selectedImage="icons8-food_filled" id="Olw-Pb-mCO">
                         <inset key="imageInsets" minX="0.0" minY="7" maxX="0.0" maxY="-7"/>
                     </tabBarItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="667"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="7tn-1t-PiU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="2Gr-Eg-LHP" kind="relationship" relationship="rootViewController" id="Q9i-5g-qTh"/>
@@ -101,6 +108,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Root View Controller" id="Pzt-pH-Tj6">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="FUt-QC-ZpU">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addTaskButtonPressed:" destination="fKr-b2-Ywc" id="bes-OF-bwB"/>
                             </connections>
@@ -127,7 +135,7 @@
                                 <rect key="frame" x="47" y="28" width="281" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -138,6 +146,9 @@
                             <constraint firstItem="myp-Uk-404" firstAttribute="top" secondItem="p6D-fy-MEH" secondAttribute="bottom" constant="8" id="twv-LX-NiV"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="todoTF" destination="myp-Uk-404" id="YN9-Cy-5NC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1dg-QL-BTX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -150,9 +161,13 @@
                     <tabBarItem key="tabBarItem" title="" image="icons8-waiter" selectedImage="icons8-waiter_filled" id="Sf5-vp-wdu">
                         <inset key="imageInsets" minX="0.0" minY="7" maxX="0.0" maxY="-7"/>
                     </tabBarItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="667"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Slr-sv-zCr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="fKr-b2-Ywc" kind="relationship" relationship="rootViewController" id="UDr-sB-PGV"/>
