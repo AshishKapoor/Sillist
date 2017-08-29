@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 class UTDatabaseController {
+    
     // MARK: - Core Data stack
     
     private init () {
@@ -31,6 +32,7 @@ class UTDatabaseController {
     }()
     
     // MARK: - Core Data Saving support
+    
     class func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {

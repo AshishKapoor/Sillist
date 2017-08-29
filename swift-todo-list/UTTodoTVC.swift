@@ -38,12 +38,11 @@ class UTTodoTVC: UITableViewController {
     
     func loadData() {
         do {
-            // TODO: - Refactor this later...
-            let formatRequest : NSFetchRequest<Task> = Task.fetchRequest()
-            let predicate = NSPredicate(format: "isPending == %@", NSNumber(value: true))
-            formatRequest.predicate = predicate
-            let fetchedResults = try context.fetch(formatRequest)
-            pendingTasks = fetchedResults
+            let formatPendingRequest : NSFetchRequest<Task> = Task.fetchRequest()
+            let predicatePending = NSPredicate(format: "isPending == %@", NSNumber(value: true))
+            formatPendingRequest.predicate = predicatePending
+            let fetchedPendingResults = try context.fetch(formatPendingRequest)
+            pendingTasks = fetchedPendingResults
             
             let formatDoneRequest : NSFetchRequest<Task> = Task.fetchRequest()
             let predicateDone = NSPredicate(format: "isPending == %@", NSNumber(value: false))
@@ -125,7 +124,7 @@ class UTTodoTVC: UITableViewController {
 
     @IBAction func addTaskButtonPressed(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        let destination: UTDetailVC = storyboard.instantiateViewController(withIdentifier: "UTDetailVC") as! UTDetailVC
+        guard let destination: UTDetailVC = storyboard.instantiateViewController(withIdentifier: "UTDetailVC") as? UTDetailVC else {return}
         destination.title = "Add Todo"
         self.navigationController?.pushViewController(destination, animated: true)
     }
