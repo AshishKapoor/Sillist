@@ -23,6 +23,8 @@ class UTTodoTVC: UITableViewController {
         } else {
             self.navigationItem.title = kDone
         }
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 50
         self.tableView.tableFooterView = UIView()
     }
     
@@ -68,11 +70,13 @@ class UTTodoTVC: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "pendingReuseIdentifier", for: indexPath)
             guard let todo = pendingTasks[indexPath.row].todo else { return UITableViewCell() }
             cell.textLabel?.text = todo
+            cell.textLabel?.numberOfLines = 0
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "doneReuseIdentifier", for: indexPath)
             guard let todo = doneTasks[indexPath.row].todo else {return UITableViewCell()}
             cell.textLabel?.text = todo
+            cell.textLabel?.numberOfLines = 0
             return cell
         }
     }
@@ -116,6 +120,14 @@ class UTTodoTVC: UITableViewController {
                         UTDatabaseController.saveContext()
                         self.loadData()
                         tableView.reloadData()
+                        
+                        let alert = UIAlertController(title: "", message: "Marked as done!", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        
+                        let when = DispatchTime.now() + 0.5
+                        DispatchQueue.main.asyncAfter(deadline: when){
+                            alert.dismiss(animated: true, completion: nil)
+                        }
                     }
                 }
             }
