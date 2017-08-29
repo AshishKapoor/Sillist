@@ -11,8 +11,6 @@ import CoreData
 
 class UTTodoTVC: UITableViewController {
     
-    var tasks: [Task] = []
-    
     var pendingTasks: [Task] = []
     var doneTasks: [Task] = []
     
@@ -40,6 +38,7 @@ class UTTodoTVC: UITableViewController {
     
     func loadData() {
         do {
+            // TODO: - Refactor this later...
             let formatRequest : NSFetchRequest<Task> = Task.fetchRequest()
             let predicate = NSPredicate(format: "isPending == %@", NSNumber(value: true))
             formatRequest.predicate = predicate
@@ -51,8 +50,6 @@ class UTTodoTVC: UITableViewController {
             formatDoneRequest.predicate = predicateDone
             let fetchedDoneResults = try context.fetch(formatDoneRequest)
             doneTasks = fetchedDoneResults
-            
-//            tasks = try context.fetch(Task.fetchRequest())
         } catch {
             fatalError("Oops! Error at loading data...")
         }
@@ -112,9 +109,17 @@ class UTTodoTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if navigationController?.tabBarController?.selectedIndex == 0 {
-//            let task = tasks[indexPath.row]
-//            task.isPending = false // Basically "done"
-//            UTDatabaseController.saveContext()
+            if let cell = tableView.cellForRow(at: indexPath) {
+                if cell.isSelected {
+                    DispatchQueue.main.async {
+                        let task = self.pendingTasks[indexPath.row]
+                        task.isPending = false // setState = "done"
+                        UTDatabaseController.saveContext()
+                        self.loadData()
+                        tableView.reloadData()
+                    }
+                }
+            }
         }
     }
 
