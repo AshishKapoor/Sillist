@@ -15,6 +15,7 @@ class UTDetailVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         todoTF.delegate = self
+        todoTF.becomeFirstResponder()
         if self.tabBarController?.selectedIndex == 0 {
             setupDoneButton()
         }
@@ -29,16 +30,6 @@ class UTDetailVC: UIViewController, UITextFieldDelegate {
         addTaskForTodo()
     }
     
-    func addTaskForTodo() {
-        let context = UTDatabaseController.getContext()
-        let task = Task(context: context)
-        task.todo = todoTF.text!
-        task.isPending = true
-        UTDatabaseController.saveContext()
-        navigationController?.popViewController(animated: true)
-    }
-    
-    
     // MARK: - Text field delegates
     
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
@@ -48,13 +39,23 @@ class UTDetailVC: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         addTaskForTodo()
-        
         return true
     }
     
-    
-//    print(todoTF.text ?? "nothing")
+    func addTaskForTodo() {
+        if (todoTF.text?.isEmpty)! {
+            let alertController = UIAlertController(title: "Warning", message:
+                "Don't forget to enter something.", preferredStyle: UIAlertControllerStyle.alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        } else {
+            let context = UTDatabaseController.getContext()
+            let task = Task(context: context)
+            task.todo = todoTF.text!
+            task.isPending = true
+            UTDatabaseController.saveContext()
+            navigationController?.popViewController(animated: true)
+        }
+    }
 
-    
-    
 }
