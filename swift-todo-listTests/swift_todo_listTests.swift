@@ -22,8 +22,8 @@ class swift_todo_listTests: XCTestCase {
     }
     
     func testTextFieldValues() {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        guard let viewController = storyboard.instantiateInitialViewController() as? UTDetailVC else {return}
+        
+        guard let viewController = kMainStoryboard.instantiateInitialViewController() as? UTDetailVC else {return}
         viewController.todoTF.text = "Testing..."
         let test = viewController.todoTF.text
         XCTAssertTrue(test == nil)

@@ -22,7 +22,7 @@ class UTDetailVC: UIViewController, UITextFieldDelegate {
     }
  
     func setupDoneButton() {
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(UTDetailVC.donePressed))
+        let doneButton = UIBarButtonItem(title: kAlertDone, style: .plain, target: self, action: #selector(UTDetailVC.donePressed))
         self.navigationItem.rightBarButtonItem = doneButton
     }
     
@@ -44,9 +44,9 @@ class UTDetailVC: UIViewController, UITextFieldDelegate {
     
     func addTaskForTodo() {
         if (todoTF.text?.isEmpty)! {
-            let alertController = UIAlertController(title: "Warning", message:
-                "Don't forget to enter something.", preferredStyle: UIAlertControllerStyle.alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+            let alertController = UIAlertController(title: kAlertWarning, message:
+                kEmptyData, preferredStyle: UIAlertControllerStyle.alert)
+            alertController.addAction(UIAlertAction(title: kAlertDismiss, style: UIAlertActionStyle.default, handler: nil))
             self.present(alertController, animated: true, completion: nil)
         } else {
             let context = UTDatabaseController.getContext()
