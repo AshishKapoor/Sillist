@@ -67,13 +67,15 @@ class UTTodoTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if navigationController?.tabBarController?.selectedIndex == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "pendingReuseIdentifier", for: indexPath)
+            let cellIdentifier = "pendingReuseIdentifier"
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             guard let todo = pendingTasks[indexPath.row].todo else { return UITableViewCell() }
             cell.textLabel?.text = todo
             cell.textLabel?.numberOfLines = 0
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "doneReuseIdentifier", for: indexPath)
+            let cellIdentifier = "doneReuseIdentifier"
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             guard let todo = doneTasks[indexPath.row].todo else { return UITableViewCell() }
             cell.textLabel?.text = todo
             cell.textLabel?.numberOfLines = 0
@@ -133,7 +135,7 @@ class UTTodoTVC: UITableViewController {
                 if cell.isSelected {
                     DispatchQueue.main.async {
                         let task = self.doneTasks[indexPath.row]
-                        task.isPending = true // setState = "done"
+                        task.isPending = true // setState = "pending"
                         UTDatabaseController.saveContext()
                         self.loadData()
                         tableView.reloadData()
