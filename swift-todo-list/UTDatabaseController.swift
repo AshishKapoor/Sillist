@@ -21,6 +21,7 @@ class UTDatabaseController {
         return UTDatabaseController.persistentContainer.viewContext
     }
     
+    @available(iOS 10.0, *)
     static var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "swift_todo_list")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in

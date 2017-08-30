@@ -41,18 +41,18 @@ class UTTodoTVC: UITableViewController {
     func loadData() {
         do {
             let formatPendingRequest : NSFetchRequest<Task> = Task.fetchRequest()
-            let predicatePending = NSPredicate(format: "isPending == %@", NSNumber(value: true))
+            let predicatePending = NSPredicate(format: kPredicate, NSNumber(value: true))
             formatPendingRequest.predicate = predicatePending
             let fetchedPendingResults = try context.fetch(formatPendingRequest)
             pendingTasks = fetchedPendingResults
             
             let formatDoneRequest : NSFetchRequest<Task> = Task.fetchRequest()
-            let predicateDone = NSPredicate(format: "isPending == %@", NSNumber(value: false))
+            let predicateDone = NSPredicate(format: kPredicate, NSNumber(value: false))
             formatDoneRequest.predicate = predicateDone
             let fetchedDoneResults = try context.fetch(formatDoneRequest)
             doneTasks = fetchedDoneResults
         } catch {
-            fatalError("Oops! Error at loading data...")
+            fatalError(kError)
         }
     }
 
@@ -74,20 +74,17 @@ class UTTodoTVC: UITableViewController {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "doneReuseIdentifier", for: indexPath)
-            guard let todo = doneTasks[indexPath.row].todo else {return UITableViewCell()}
+            guard let todo = doneTasks[indexPath.row].todo else { return UITableViewCell() }
             cell.textLabel?.text = todo
             cell.textLabel?.numberOfLines = 0
             return cell
         }
     }
     
-    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
     
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if navigationController?.tabBarController?.selectedIndex == 0 {
             if editingStyle == .delete {
@@ -121,7 +118,7 @@ class UTTodoTVC: UITableViewController {
                         self.loadData()
                         tableView.reloadData()
                         
-                        let alert = UIAlertController(title: "", message: "Marked as done!", preferredStyle: .alert)
+                        let alert = UIAlertController(title: "", message: kAlertComplete, preferredStyle: .alert)
                         self.present(alert, animated: true, completion: nil)
                         
                         let when = DispatchTime.now() + 0.5
@@ -131,12 +128,31 @@ class UTTodoTVC: UITableViewController {
                     }
                 }
             }
+        } else {
+            if let cell = tableView.cellForRow(at: indexPath) {
+                if cell.isSelected {
+                    DispatchQueue.main.async {
+                        let task = self.doneTasks[indexPath.row]
+                        task.isPending = true // setState = "done"
+                        UTDatabaseController.saveContext()
+                        self.loadData()
+                        tableView.reloadData()
+                        
+                        let alert = UIAlertController(title: "", message: kAlertPending, preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        
+                        let when = DispatchTime.now() + 0.5
+                        DispatchQueue.main.asyncAfter(deadline: when) {
+                            alert.dismiss(animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
         }
     }
 
     @IBAction func addTaskButtonPressed(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        guard let destination: UTDetailVC = storyboard.instantiateViewController(withIdentifier: "UTDetailVC") as? UTDetailVC else {return}
+        guard let destination: UTDetailVC = kMainStoryboard.instantiateViewController(withIdentifier: "UTDetailVC") as? UTDetailVC else { return }
         destination.title = "Add Todo"
         self.navigationController?.pushViewController(destination, animated: true)
     }

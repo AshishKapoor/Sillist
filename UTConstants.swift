@@ -7,6 +7,21 @@
 //
 
 import Foundation
+import UIKit
 
 let kPending = "Pending"
 let kDone = "Done"
+
+let kPredicate = "isPending == %@"
+let kError = "Oops! Error at loading data..."
+
+let kMainStoryboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+
+let kEmptyData = "Don't forget to enter something."
+
+let kAlertWarning = "Warning"
+let kAlertDone = "Done"
+let kAlertDismiss = "Dismiss"
+
+let kAlertComplete = "Marked as done!"
+let kAlertPending = "Marked as pending!"
