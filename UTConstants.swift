@@ -19,9 +19,16 @@ let kMainStoryboard = UIStoryboard(name: "Main", bundle: Bundle.main)
 
 let kEmptyData = "Don't forget to enter something."
 
-let kAlertWarning = "Warning"
+let kAlertWarning = "Oops!"
 let kAlertDone = "Done"
 let kAlertDismiss = "Dismiss"
 
 let kAlertComplete = "Marked as done!"
 let kAlertPending = "Marked as pending!"
+
+let kPendingReusableCell = "pendingReuseIdentifier"
+let kDoneReusableCell = "doneReuseIdentifier"
+
+let kAddTodo = "Add Todo"
+
+let kDatabaseContainer = "swift_todo_list"

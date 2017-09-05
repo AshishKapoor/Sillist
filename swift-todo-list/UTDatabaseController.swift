@@ -23,7 +23,7 @@ class UTDatabaseController {
     
     @available(iOS 10.0, *)
     static var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "swift_todo_list")
+        let container = NSPersistentContainer(name: kDatabaseContainer)
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
@@ -33,7 +33,6 @@ class UTDatabaseController {
     }()
     
     // MARK: - Core Data Saving support
-    
     class func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {

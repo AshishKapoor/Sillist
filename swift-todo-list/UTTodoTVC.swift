@@ -67,14 +67,14 @@ class UTTodoTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if navigationController?.tabBarController?.selectedIndex == 0 {
-            let cellIdentifier = "pendingReuseIdentifier"
+            let cellIdentifier = kPendingReusableCell
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             guard let todo = pendingTasks[indexPath.row].todo else { return UITableViewCell() }
             cell.textLabel?.text = todo
             cell.textLabel?.numberOfLines = 0
             return cell
         } else {
-            let cellIdentifier = "doneReuseIdentifier"
+            let cellIdentifier = kDoneReusableCell
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             guard let todo = doneTasks[indexPath.row].todo else { return UITableViewCell() }
             cell.textLabel?.text = todo
@@ -155,7 +155,7 @@ class UTTodoTVC: UITableViewController {
 
     @IBAction func addTaskButtonPressed(_ sender: Any) {
         guard let destination: UTDetailVC = kMainStoryboard.instantiateViewController(withIdentifier: "UTDetailVC") as? UTDetailVC else { return }
-        destination.title = "Add Todo"
+        destination.title = kAddTodo
         self.navigationController?.pushViewController(destination, animated: true)
     }
 }
