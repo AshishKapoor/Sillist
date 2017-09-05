@@ -67,19 +67,17 @@ class UTTodoTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if navigationController?.tabBarController?.selectedIndex == 0 {
-            let cellIdentifier = kPendingReusableCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+            let cellForPending = tableView.dequeueReusableCell(withIdentifier: kPendingReusableCell, for: indexPath)
             guard let todo = pendingTasks[indexPath.row].todo else { return UITableViewCell() }
-            cell.textLabel?.text = todo
-            cell.textLabel?.numberOfLines = 0
-            return cell
+            cellForPending.textLabel?.text = todo
+            cellForPending.textLabel?.numberOfLines = 0
+            return cellForPending
         } else {
-            let cellIdentifier = kDoneReusableCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
+            let cellForDone = tableView.dequeueReusableCell(withIdentifier: kDoneReusableCell, for: indexPath)
             guard let todo = doneTasks[indexPath.row].todo else { return UITableViewCell() }
-            cell.textLabel?.text = todo
-            cell.textLabel?.numberOfLines = 0
-            return cell
+            cellForDone.textLabel?.text = todo
+            cellForDone.textLabel?.numberOfLines = 0
+            return cellForDone
         }
     }
     
@@ -106,16 +104,14 @@ class UTTodoTVC: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             if cell.isSelected {
-                DispatchQueue.main.async {
-                    if self.navigationController?.tabBarController?.selectedIndex == 0 {
-                        let task = self.pendingTasks[indexPath.row]
-                        task.isPending = false // setState = "done"
-                    } else {
-                        let task = self.doneTasks[indexPath.row]
-                        task.isPending = true // setState = "pending"
-                    }
-                    self.save()
+                if self.navigationController?.tabBarController?.selectedIndex == 0 {
+                    let task = self.pendingTasks[indexPath.row]
+                    task.isPending = false // setState = "done"
+                } else {
+                    let task = self.doneTasks[indexPath.row]
+                    task.isPending = true // setState = "pending"
                 }
+                self.save()
             }
         }
     }
@@ -128,9 +124,13 @@ class UTTodoTVC: UITableViewController {
     }
     
     func alertSuccess() {
-        let alert = UIAlertController(title: "", message: kAlertComplete, preferredStyle: .alert)
+        var alert = UIAlertController()
+        if self.navigationController?.tabBarController?.selectedIndex == 0 {
+            alert = UIAlertController(title: kAlertSuccess, message: kAlertComplete, preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: kAlertSuccess, message: kAlertPending, preferredStyle: .alert)
+        }
         self.present(alert, animated: true, completion: nil)
-        
         let when = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: when){
             alert.dismiss(animated: true, completion: nil)

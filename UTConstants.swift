@@ -24,6 +24,7 @@ let kEmptyData = "Don't forget to enter something."
 let kAlertWarning = "Oops!"
 let kAlertDone = "Done"
 let kAlertDismiss = "Dismiss"
+let kAlertSuccess = "Success"
 
 let kAlertComplete = "Marked as done!"
 let kAlertPending = "Marked as pending!"
