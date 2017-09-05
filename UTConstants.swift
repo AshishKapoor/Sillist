@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+let kTableRowHeight: CGFloat = 50.00
+
 let kPending = "Pending"
 let kDone = "Done"
 

@@ -24,7 +24,7 @@ class UTTodoTVC: UITableViewController {
             self.navigationItem.title = kDone
         }
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 50
+        self.tableView.estimatedRowHeight = kTableRowHeight
         self.tableView.tableFooterView = UIView()
     }
     
@@ -88,68 +88,52 @@ class UTTodoTVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if navigationController?.tabBarController?.selectedIndex == 0 {
-            if editingStyle == .delete {
-                let task = pendingTasks[indexPath.row]
-                context.delete(task)
-                UTDatabaseController.saveContext()
-                loadData()
-                tableView.deleteRows(at: [indexPath], with: .fade)
+        if editingStyle == .delete {
+            let task: Task!
+            if navigationController?.tabBarController?.selectedIndex == 0 {
+                task = pendingTasks[indexPath.row]
+            } else {
+                task = doneTasks[indexPath.row]
             }
-            tableView.reloadData()
-        } else {
-            if editingStyle == .delete {
-                let task = doneTasks[indexPath.row]
-                context.delete(task)
-                UTDatabaseController.saveContext()
-                loadData()
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-            tableView.reloadData()
+            context.delete(task)
+            UTDatabaseController.saveContext()
+            loadData()
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
+        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if navigationController?.tabBarController?.selectedIndex == 0 {
-            if let cell = tableView.cellForRow(at: indexPath) {
-                if cell.isSelected {
-                    DispatchQueue.main.async {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            if cell.isSelected {
+                DispatchQueue.main.async {
+                    if self.navigationController?.tabBarController?.selectedIndex == 0 {
                         let task = self.pendingTasks[indexPath.row]
                         task.isPending = false // setState = "done"
-                        UTDatabaseController.saveContext()
-                        self.loadData()
-                        tableView.reloadData()
-                        
-                        let alert = UIAlertController(title: "", message: kAlertComplete, preferredStyle: .alert)
-                        self.present(alert, animated: true, completion: nil)
-                        
-                        let when = DispatchTime.now() + 0.5
-                        DispatchQueue.main.asyncAfter(deadline: when){
-                            alert.dismiss(animated: true, completion: nil)
-                        }
-                    }
-                }
-            }
-        } else {
-            if let cell = tableView.cellForRow(at: indexPath) {
-                if cell.isSelected {
-                    DispatchQueue.main.async {
+                    } else {
                         let task = self.doneTasks[indexPath.row]
                         task.isPending = true // setState = "pending"
-                        UTDatabaseController.saveContext()
-                        self.loadData()
-                        tableView.reloadData()
-                        
-                        let alert = UIAlertController(title: "", message: kAlertPending, preferredStyle: .alert)
-                        self.present(alert, animated: true, completion: nil)
-                        
-                        let when = DispatchTime.now() + 0.5
-                        DispatchQueue.main.asyncAfter(deadline: when) {
-                            alert.dismiss(animated: true, completion: nil)
-                        }
                     }
+                    self.save()
                 }
             }
+        }
+    }
+    
+    private func save() {
+        UTDatabaseController.saveContext()
+        self.loadData()
+        tableView.reloadData()
+        self.alertSuccess()
+    }
+    
+    func alertSuccess() {
+        let alert = UIAlertController(title: "", message: kAlertComplete, preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+        
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when){
+            alert.dismiss(animated: true, completion: nil)
         }
     }
 

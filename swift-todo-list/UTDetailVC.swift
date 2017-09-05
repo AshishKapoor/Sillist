@@ -31,7 +31,7 @@ class UTDetailVC: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Text field delegates
-    
+
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
         textField.resignFirstResponder()
     }
@@ -44,18 +44,25 @@ class UTDetailVC: UIViewController, UITextFieldDelegate {
     
     func addTaskForTodo() {
         if (todoTF.text?.isEmpty)! {
-            let alertController = UIAlertController(title: kAlertWarning, message:
-                kEmptyData, preferredStyle: UIAlertControllerStyle.alert)
-            alertController.addAction(UIAlertAction(title: kAlertDismiss, style: UIAlertActionStyle.default, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
+            showWarningAlert()
         } else {
-            let context = UTDatabaseController.getContext()
-            let task = Task(context: context)
-            task.todo = todoTF.text!
-            task.isPending = true
-            UTDatabaseController.saveContext()
-            navigationController?.popViewController(animated: true)
+            save()
         }
     }
-
+    
+    func showWarningAlert() {
+        let alertController = UIAlertController(title: kAlertWarning, message:
+            kEmptyData, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: kAlertDismiss, style: UIAlertActionStyle.default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    private func save() {
+        let context = UTDatabaseController.getContext()
+        let task = Task(context: context)
+        task.todo = todoTF.text!
+        task.isPending = true
+        UTDatabaseController.saveContext()
+        navigationController?.popViewController(animated: true)
+    }
 }
