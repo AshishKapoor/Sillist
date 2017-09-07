@@ -9,23 +9,20 @@
 import UIKit
 import CoreData
 
+enum taskState: Int {
+    case pending, done
+}
+
 class UTTodoTVC: UITableViewController {
-    
+    let context = UTDatabaseController.getContext()
     var pendingTasks: [Task] = []
     var doneTasks: [Task] = []
-    
-    let context = UTDatabaseController.getContext()
+    var tabIndex: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if navigationController?.tabBarController?.selectedIndex == 0 {
-            self.navigationItem.title = kPending
-        } else {
-            self.navigationItem.title = kDone
-        }
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = kTableRowHeight
-        self.tableView.tableFooterView = UIView()
+        setupTabBar()
+        setupTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,19 +35,34 @@ class UTTodoTVC: UITableViewController {
         tableView.reloadData()
     }
     
+    func setupTabBar() {
+        guard let finalIndexValue = self.navigationController?.tabBarController?.selectedIndex else {return}
+        tabIndex = finalIndexValue
+        if tabIndex == taskState.pending.rawValue {
+            self.navigationItem.title = kPending
+        } else {
+            self.navigationItem.title = kDone
+        }
+    }
+    
+    func setupTableView() {
+        self.tableView.rowHeight            = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight   = kTableRowHeight
+        self.tableView.tableFooterView      = UIView()
+    }
+    
     func loadData() {
+        pendingTasks    = fetchLocalData(pending: true)
+        doneTasks       = fetchLocalData(pending: false)
+    }
+    
+    func fetchLocalData(pending: Bool) -> [Task] {
         do {
-            let formatPendingRequest : NSFetchRequest<Task> = Task.fetchRequest()
-            let predicatePending = NSPredicate(format: kPredicate, NSNumber(value: true))
-            formatPendingRequest.predicate = predicatePending
-            let fetchedPendingResults = try context.fetch(formatPendingRequest)
-            pendingTasks = fetchedPendingResults
-            
-            let formatDoneRequest : NSFetchRequest<Task> = Task.fetchRequest()
-            let predicateDone = NSPredicate(format: kPredicate, NSNumber(value: false))
-            formatDoneRequest.predicate = predicateDone
-            let fetchedDoneResults = try context.fetch(formatDoneRequest)
-            doneTasks = fetchedDoneResults
+            let formatRequest: NSFetchRequest<Task> = Task.fetchRequest()
+            let predicate            = NSPredicate(format: kPredicate, NSNumber(value: pending))
+            formatRequest.predicate  = predicate
+            let fetchResults         = try context.fetch(formatRequest)
+            return fetchResults
         } catch {
             fatalError(kError)
         }
@@ -58,7 +70,7 @@ class UTTodoTVC: UITableViewController {
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if navigationController?.tabBarController?.selectedIndex == 0 {
+        if tabIndex == taskState.pending.rawValue {
             return pendingTasks.count
         } else {
             return doneTasks.count
@@ -66,7 +78,7 @@ class UTTodoTVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if navigationController?.tabBarController?.selectedIndex == 0 {
+        if tabIndex == taskState.pending.rawValue {
             let cellForPending = tableView.dequeueReusableCell(withIdentifier: kPendingReusableCell, for: indexPath)
             guard let todo = pendingTasks[indexPath.row].todo else { return UITableViewCell() }
             cellForPending.textLabel?.text = todo
@@ -87,8 +99,8 @@ class UTTodoTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let task: Task!
-            if navigationController?.tabBarController?.selectedIndex == 0 {
+            let task: Task
+            if tabIndex == 0 {
                 task = pendingTasks[indexPath.row]
             } else {
                 task = doneTasks[indexPath.row]
@@ -104,7 +116,7 @@ class UTTodoTVC: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             if cell.isSelected {
-                if self.navigationController?.tabBarController?.selectedIndex == 0 {
+                if tabIndex == taskState.pending.rawValue {
                     let task = self.pendingTasks[indexPath.row]
                     task.isPending = false // setState = "done"
                 } else {
@@ -124,12 +136,15 @@ class UTTodoTVC: UITableViewController {
     }
     
     func alertSuccess() {
-        var alert = UIAlertController()
-        if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            alert = UIAlertController(title: kAlertSuccess, message: kAlertComplete, preferredStyle: .alert)
+        if tabIndex == taskState.pending.rawValue {
+            showAlert(message: kAlertComplete)
         } else {
-            alert = UIAlertController(title: kAlertSuccess, message: kAlertPending, preferredStyle: .alert)
+            showAlert(message: kAlertPending)
         }
+    }
+    
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: kAlertSuccess, message: message, preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         let when = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: when){
